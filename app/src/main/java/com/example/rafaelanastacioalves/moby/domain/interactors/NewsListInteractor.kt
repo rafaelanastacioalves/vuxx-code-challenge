@@ -6,8 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class NewsListBaseInteractor :
-        BaseInteractor<Resource<List<Long>>, NewsListBaseInteractor.RequestValues>() {
+class NewsListInteractor :
+        BaseInteractor<Resource<List<Long>>, NewsListInteractor.RequestValues>() {
     val appRepository: AppRepository
 
     init {
