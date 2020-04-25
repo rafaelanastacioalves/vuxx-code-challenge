@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-abstract class BaseInteractor<out T ,in R : BaseInteractor.RequestValues> {
+abstract class BaseInteractor<out T, in R : BaseInteractor.RequestValues> {
 
     abstract suspend fun run(requestValue: R?): T
 
@@ -12,7 +12,7 @@ abstract class BaseInteractor<out T ,in R : BaseInteractor.RequestValues> {
             scope: CoroutineScope,
             params: R?,
             onResult: (T) -> Unit = {}
-    ){
+    ) {
         val backGroundJob = scope.async { run(params) }
         scope.launch { onResult(backGroundJob.await()) }
     }

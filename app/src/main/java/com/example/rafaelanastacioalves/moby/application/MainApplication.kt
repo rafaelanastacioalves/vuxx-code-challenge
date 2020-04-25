@@ -20,7 +20,7 @@ class MainApplication : Application() {
     }
 
     private fun setupDB() {
-        Hawk.init(this).build();
+        Hawk.init(this).build()
     }
 
     private fun setupLog() {

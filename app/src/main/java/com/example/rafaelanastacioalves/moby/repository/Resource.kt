@@ -8,7 +8,7 @@ class Resource<T> constructor(
     companion object Factory {
 
         fun <T> success(successData: T?): Resource<T> {
-            return Resource(Status.SUCCESS, successData, null);
+            return Resource(Status.SUCCESS, successData, null)
         }
 
         fun <T> error(status: Status, data: T?, msg: String?): Resource<T> {
@@ -20,5 +20,5 @@ class Resource<T> constructor(
         }
     }
 
-    enum class Status { SUCCESS, INTERNAL_SERVER_ERROR ,GENERIC_ERROR, LOADING}
+    enum class Status { SUCCESS, INTERNAL_SERVER_ERROR, GENERIC_ERROR, LOADING }
 }

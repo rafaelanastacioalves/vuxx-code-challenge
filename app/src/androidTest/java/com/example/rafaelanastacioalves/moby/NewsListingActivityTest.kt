@@ -7,7 +7,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 
-import com.example.rafaelanastacioalves.moby.newsmainlisting.NewsListingActivity
+import com.example.rafaelanastacioalves.moby.newslisting.NewsListingActivity
 import com.example.rafaelanastacioalves.moby.util.RestServiceTestHelper
 
 import org.junit.After
@@ -36,7 +36,7 @@ class NewsListingActivityTest {
 
     @get:Rule
     var mainActivityActivityTestRule = ActivityTestRule(NewsListingActivity::class.java, true, false)
-    private val fileNameMainNewsListOKResponse = "main_news_ok_response.json"
+    private val fileNameNewsListOKResponse = "news_ok_response.json"
     private var server: MockWebServer? = null
 
     @Before
@@ -56,7 +56,7 @@ class NewsListingActivityTest {
         server!!.enqueue(MockResponse()
                 .setResponseCode(200)
                 .setBody(RestServiceTestHelper.getStringFromFile(
-                        InstrumentationRegistry.getInstrumentation().context, fileNameMainNewsListOKResponse)
+                        InstrumentationRegistry.getInstrumentation().context, fileNameNewsListOKResponse)
                 )
         )
 
@@ -65,7 +65,7 @@ class NewsListingActivityTest {
         mainActivityActivityTestRule.launchActivity(intent)
 
         onView(
-                withId(R.id.main_news_list)
+                withId(R.id.news_list)
         ).perform(
                 RecyclerViewActions.scrollToHolder(
                         withHolderContainingId(R.id.news_detail_title_textview)

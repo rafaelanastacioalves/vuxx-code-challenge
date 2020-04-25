@@ -1,4 +1,4 @@
-package com.example.rafaelanastacioalves.moby.newsmainlisting;
+package com.example.rafaelanastacioalves.moby.newslisting
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,32 +11,32 @@ import com.example.rafaelanastacioalves.moby.repository.Resource
 
 class NewsListViewModel : ViewModel() {
 
-    val mainNewsList = MutableLiveData<Resource<List<Long>>>();
+    val newsList = MutableLiveData<Resource<List<Long>>>()
     val newLiveData = MutableLiveData<Resource<New>>()
 
-    val mainNewsListInteractor: NewsListBaseInteractor = NewsListBaseInteractor()
+    val newsListInteractor: NewsListBaseInteractor = NewsListBaseInteractor()
     val newInteractor: NewsDetailsBaseInteractor = NewsDetailsBaseInteractor()
 
 
-
-    fun loadData() : MutableLiveData<Resource<List<Long>>> {
-        mainNewsListInteractor.execute(viewModelScope,null, {
+    fun loadData(): MutableLiveData<Resource<List<Long>>> {
+        newLiveData.postValue(Resource.loading())
+        newsListInteractor.execute(viewModelScope, null, {
             handleList(it)
         })
 
-        return mainNewsList
-
+        return newsList
     }
 
     private fun handleList(it: Resource<List<Long>>) {
-        mainNewsList.postValue(it)
+        newsList.postValue(it)
     }
 
     fun loadNew(newId: Long): MutableLiveData<Resource<New>> {
+        newLiveData.postValue(Resource.loading())
         newInteractor.execute(viewModelScope, NewsDetailsBaseInteractor.RequestValues(newId), {
             handleNew(it)
         })
-        return newLiveData;
+        return newLiveData
     }
 
     private fun handleNew(new: Resource<New>?) {

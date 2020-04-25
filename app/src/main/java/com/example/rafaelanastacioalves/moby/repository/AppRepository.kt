@@ -11,7 +11,7 @@ object AppRepository {
         return object : NetworkBoundResource<List<Long>, List<Long>>() {
             override suspend fun makeCall(): List<Long> {
 
-                var apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java);
+                var apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java)
                 return apiClient.getNewsList()
             }
 
@@ -38,8 +38,8 @@ object AppRepository {
             }
 
             override fun saveIntoDB(resultData: New?) {
-                resultData?.let{DAO.saveNewsDetail(resultData)}
+                resultData?.let { DAO.saveNewsDetail(resultData) }
             }
-        }.fromHttpOnly()
+        }.fromHttpAndDB()
     }
 }

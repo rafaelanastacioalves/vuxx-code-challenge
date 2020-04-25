@@ -1,7 +1,8 @@
 <resources>
-	<string name="app_name">APP_NAME</string>
+	<string name="app_name">Desafio Vuxx</string>
     <string name="news_imageview_transition_name">news_imageview_transition</string>
 
 	<!-- TODO: Remove or change this placeholder text -->
     <string name="detail_entitiy_title_textview">Text</string>
+    <string name="article_id_string">Article ID: %s</string>
 </resources>
