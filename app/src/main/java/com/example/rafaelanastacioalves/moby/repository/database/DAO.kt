@@ -4,27 +4,39 @@ import com.example.rafaelanastacioalves.moby.domain.entities.New
 import com.orhanobut.hawk.Hawk
 
 object DAO {
-    private const val MAIN_ENTITY_LIST_KEY = "AAAA"
+    private const val READ_NEWS_KEY: String = "BBBB"
+    private const val NEWS_LIST_KEY: String = "AAAA"
 
     fun getNewsList(): List<Long>? {
-        return Hawk.get(MAIN_ENTITY_LIST_KEY)
+        return Hawk.get(NEWS_LIST_KEY)
     }
 
     fun saveNewsList(resultData: List<Long>?) {
-        val resultSuccessfull = Hawk.put(MAIN_ENTITY_LIST_KEY, resultData)
-        if (!resultSuccessfull) {
+        val resultSuccessful = Hawk.put(NEWS_LIST_KEY, resultData)
+        if (!resultSuccessful) {
             throw Exception()
         }
     }
 
     fun saveNewsDetail(resultData: New) {
-        val resultSuccessfull = Hawk.put(resultData.id.toString(), resultData)
-        if (!resultSuccessfull) {
+        val resultSuccessful = Hawk.put(resultData.id.toString(), resultData)
+        if (!resultSuccessful) {
             throw Exception()
         }
     }
 
     fun getNewDetails(key: String): New? {
         return Hawk.get(key)
+    }
+
+    fun getReadNewsIdsList(): List<Long>? {
+        return Hawk.get(READ_NEWS_KEY)
+    }
+
+    fun saveReadNewsIdsList(resultData: List<Long>?) {
+        val resultSuccessful = Hawk.put(NEWS_LIST_KEY, resultData)
+        if (!resultSuccessful) {
+            throw Exception()
+        }
     }
 }

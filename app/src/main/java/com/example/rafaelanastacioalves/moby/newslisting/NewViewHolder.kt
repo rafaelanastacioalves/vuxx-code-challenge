@@ -27,7 +27,9 @@ class NewViewHolder(override val containerView: View) : RecyclerView.ViewHolder(
 
 
     fun bind(newID: Long, context: Context) {
+
         itemView.news_detail_title_textview.text = context.getString(R.string.article_id_string
+                , (adapterPosition + 1).toString()
                 , newID.toString()
         )
     }

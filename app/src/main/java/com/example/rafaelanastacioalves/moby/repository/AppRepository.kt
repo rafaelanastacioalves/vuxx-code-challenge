@@ -7,11 +7,11 @@ import com.example.rafaelanastacioalves.moby.repository.http.ServiceGenerator
 
 object AppRepository {
 
-    suspend fun getNewsIdsList(): Resource<List<Long>> {
+    suspend fun getNewsIdsList(): Resource<List<Long>?> {
         return object : NetworkBoundResource<List<Long>, List<Long>>() {
             override suspend fun makeCall(): List<Long> {
 
-                var apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java)
+                val apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java)
                 return apiClient.getNewsList()
             }
 
@@ -26,10 +26,10 @@ object AppRepository {
         }.fromHttpAndDB()
     }
 
-    suspend fun getNewDetails(requestId: Long): Resource<New> {
+    suspend fun getNewDetails(requestId: Long): Resource<New?> {
         return object : NetworkBoundResource<New, New>() {
             override suspend fun makeCall(): New? {
-                var apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java)
+                val apiClient: APIClient = ServiceGenerator.createService(APIClient::class.java)
                 return apiClient.getNewsDetails(requestId)
             }
 
@@ -41,5 +41,22 @@ object AppRepository {
                 resultData?.let { DAO.saveNewsDetail(resultData) }
             }
         }.fromHttpAndDB()
+    }
+
+    suspend fun getReadNewsIdsList(): Resource<List<Long>?> {
+        return object : NetworkBoundResource<List<Long>, List<Long>>() {
+            override suspend fun makeCall(): List<Long>? {
+                return null
+            }
+
+            override suspend fun getFromDB(): List<Long>? {
+                return DAO.getReadNewsIdsList()
+            }
+
+            override fun saveIntoDB(resultData: List<Long>?) {
+                DAO.saveReadNewsIdsList(resultData)
+            }
+
+        }.fromDB()
     }
 }

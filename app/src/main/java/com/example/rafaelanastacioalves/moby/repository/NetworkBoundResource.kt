@@ -10,7 +10,7 @@ import java.net.HttpURLConnection
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
     val viewModelScope = CoroutineScope(Dispatchers.IO)
-    private lateinit var result: Resource<ResultType>
+    private lateinit var result: Resource<ResultType?>
 
     abstract suspend fun makeCall(): ResultType?
 
@@ -31,6 +31,23 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                 result = Resource.error(Resource.Status.GENERIC_ERROR,
                         null,
                         null)
+            }
+        }
+    }
+
+    private suspend fun fetchFromDB() {
+        val localData: ResultType?
+        try {
+            localData = getFromDB()
+            result = Resource(Resource.Status.SUCCESS, localData, null)
+
+        } catch (exception: Exception) {
+            if (exception is HttpException) {
+                treatHttpException(exception)
+            } else {
+                result = Resource.error(Resource.Status.GENERIC_ERROR,
+                        null,
+                        exception.message)
             }
         }
     }
@@ -78,13 +95,18 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
         }
     }
 
-    suspend fun fromHttpOnly(): Resource<ResultType> {
+    suspend fun fromHttpOnly(): Resource<ResultType?> {
         fetchFromNetwork()
         return result
     }
 
-    suspend fun fromHttpAndDB(): Resource<ResultType> {
+    suspend fun fromHttpAndDB(): Resource<ResultType?> {
         fetchFromNetworkAndDB()
+        return result
+    }
+
+    suspend fun fromDB(): Resource<ResultType?> {
+        fetchFromDB()
         return result
     }
 

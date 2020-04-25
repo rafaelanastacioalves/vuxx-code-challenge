@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +38,7 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
     private fun subscribe() {
         mNewsListViewModel = ViewModelProvider.NewInstanceFactory()
                 .create(NewsListViewModel::class.java)
-        mNewsListViewModel.loadData().observeForever(Observer { newsResource ->
+        mNewsListViewModel.loadData().observeForever({ newsResource ->
             Timber.d("On Changed")
             onNewsListReceived(newsResource)
         })
@@ -60,7 +59,7 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
     }
 
 
-    private fun onNewsListReceived(listResource: Resource<List<Long>>) {
+    private fun onNewsListReceived(listResource: Resource<List<Long>?>) {
         when (listResource.status) {
             Resource.Status.GENERIC_ERROR -> {
                 //TODO add any error managing
@@ -101,7 +100,7 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
     override fun onClick(view: View, position: Int) {
         val newId = newsAdapter.getItems()?.get(position)
         newId?.let {
-            mNewsListViewModel.loadNew(newId).observeForever(Observer { newResource ->
+            mNewsListViewModel.loadNew(newId).observeForever({ newResource ->
                 when (newResource.status) {
                     Resource.Status.LOADING -> {
                         hideNewsList()
@@ -136,7 +135,7 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
         news_list.visibility = View.GONE
     }
 
-    private fun openNew(new: Resource<New>) {
+    private fun openNew(new: Resource<New?>) {
         new.data?.let {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.url))
             startActivity(browserIntent)
