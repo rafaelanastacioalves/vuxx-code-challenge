@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,9 +18,10 @@ import kotlinx.android.synthetic.main.activity_news_listing.*
 import timber.log.Timber
 
 
-class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
+class NewsListingActivity : AppCompatActivity() {
 
-    private val mClickListener = this
+    private lateinit var mDismissClickListener: RecyclerViewClickListener
+    private lateinit var itemClickLIstener: RecyclerViewClickListener
     private val newsAdapter: NewsAdapter by lazy {
         NewsAdapter(this)
     }
@@ -29,11 +31,11 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViews()
+        setupListerners()
         setupRecyclerView()
         subscribe()
 
     }
-
 
     private fun subscribe() {
         mNewsListViewModel = ViewModelProvider.NewInstanceFactory()
@@ -42,6 +44,27 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
             Timber.d("On Changed")
             onNewsListReceived(newsResource)
         })
+    }
+
+
+    private fun setupListerners() {
+        mDismissClickListener = object : RecyclerViewClickListener {
+            override fun onClick(view: View, position: Int) {
+                val newId = newsAdapter.getItems()?.get(position)
+                newId?.let {
+                    markAsRead(newId)
+                }
+            }
+        }
+
+        itemClickLIstener = object : RecyclerViewClickListener {
+            override fun onClick(view: View, position: Int) {
+                val newId = newsAdapter.getItems()?.get(position)
+                newId?.let {
+                    loadNews(newId)
+                }
+            }
+        }
     }
 
     private fun setupViews() {
@@ -54,10 +77,10 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
         mRecyclerView = findViewById<View>(R.id.news_list) as RecyclerView
         val layoutManager = LinearLayoutManager(applicationContext)
         mRecyclerView!!.layoutManager = layoutManager
-        newsAdapter.setRecyclerViewClickListener(mClickListener)
+        newsAdapter.setRecyclerViewClickListener(itemClickLIstener)
+        newsAdapter.setItemDismissClickListener(mDismissClickListener)
         mRecyclerView!!.adapter = newsAdapter
     }
-
 
     private fun onNewsListReceived(listResource: Resource<List<Long>?>) {
         when (listResource.status) {
@@ -80,6 +103,7 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
         }
     }
 
+
     private fun showError() {
         news_loading_error.visibility = View.VISIBLE
     }
@@ -96,33 +120,55 @@ class NewsListingActivity : AppCompatActivity(), RecyclerViewClickListener {
         progress_bar.show()
     }
 
-
-    override fun onClick(view: View, position: Int) {
-        val newId = newsAdapter.getItems()?.get(position)
-        newId?.let {
-            mNewsListViewModel.loadNew(newId).observeForever({ newResource ->
-                when (newResource.status) {
-                    Resource.Status.LOADING -> {
-                        hideNewsList()
-                        showProgressBar()
-                    }
-                    Resource.Status.SUCCESS -> {
-                        showNewsList()
-                        hideProgressBar()
-                        openNew(newResource)
-                    }
-                    Resource.Status.INTERNAL_SERVER_ERROR -> {
-                        hideNewsList()
-                        hideProgressBar()
-                        showError()
-                    }
-                    Resource.Status.GENERIC_ERROR -> {
-                        hideNewsList()
-                        hideProgressBar()
-                        showError()
-                    }
+    private fun loadNews(newId: Long) {
+        mNewsListViewModel.loadNew(newId).observeForever { newResource ->
+            when (newResource.status) {
+                Resource.Status.LOADING -> {
+                    hideNewsList()
+                    showProgressBar()
                 }
-            })
+                Resource.Status.SUCCESS -> {
+                    showNewsList()
+                    hideProgressBar()
+                    openNew(newResource)
+                }
+                Resource.Status.INTERNAL_SERVER_ERROR -> {
+                    hideNewsList()
+                    hideProgressBar()
+                    showError()
+                }
+                Resource.Status.GENERIC_ERROR -> {
+                    hideNewsList()
+                    hideProgressBar()
+                    showError()
+                }
+            }
+        }
+    }
+
+    private fun markAsRead(newId: Long) {
+        mNewsListViewModel.markAsRead(newId).observeForever { newResource ->
+            when (newResource.status) {
+                Resource.Status.SUCCESS -> {
+                    showNewsList()
+                    hideProgressBar()
+                    Toast.makeText(this,
+                            getString(R.string.omitted_item)
+                            , Toast.LENGTH_SHORT).show()
+                }
+                Resource.Status.INTERNAL_SERVER_ERROR -> {
+                    hideNewsList()
+                    showError()
+                }
+                Resource.Status.GENERIC_ERROR -> {
+                    hideNewsList()
+                    showError()
+                }
+                Resource.Status.LOADING -> {
+                    hideNewsList()
+                    showProgressBar()
+                }
+            }
 
         }
     }

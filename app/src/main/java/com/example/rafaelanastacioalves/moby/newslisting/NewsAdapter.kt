@@ -8,13 +8,18 @@ import com.example.rafaelanastacioalves.moby.R
 import com.example.rafaelanastacioalves.moby.listeners.RecyclerViewClickListener
 
 class NewsAdapter(context: Context) : RecyclerView.Adapter<NewViewHolder>() {
-    private lateinit var recyclerViewClickListener: RecyclerViewClickListener
+    private lateinit var itemDismissClickListener: RecyclerViewClickListener
+    private lateinit var itemClickListener: RecyclerViewClickListener
     private var items: List<Long>? = null
 
     private val mContext: Context = context
 
     fun setRecyclerViewClickListener(aRVC: RecyclerViewClickListener) {
-        this.recyclerViewClickListener = aRVC
+        this.itemClickListener = aRVC
+    }
+
+    fun setItemDismissClickListener(itemClickListener: RecyclerViewClickListener) {
+        this.itemDismissClickListener = itemClickListener
     }
 
     fun getItems(): List<Long>? {
@@ -28,7 +33,11 @@ class NewsAdapter(context: Context) : RecyclerView.Adapter<NewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewViewHolder {
         return NewViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.detail_news_viewholder, parent, false), recyclerViewClickListener)
+                .inflate(R.layout.detail_news_viewholder,
+                        parent,
+                        false),
+                itemClickListener,
+                itemDismissClickListener)
     }
 
     override fun onBindViewHolder(holder: NewViewHolder, position: Int) {

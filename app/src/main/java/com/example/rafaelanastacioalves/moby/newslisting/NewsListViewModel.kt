@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rafaelanastacioalves.moby.domain.entities.New
+import com.example.rafaelanastacioalves.moby.domain.interactors.MarkItemAsReadIInteractor
 import com.example.rafaelanastacioalves.moby.domain.interactors.NewsDetailsInteractor
 import com.example.rafaelanastacioalves.moby.domain.interactors.NewsListInteractor
 import com.example.rafaelanastacioalves.moby.repository.Resource
@@ -13,9 +14,11 @@ class NewsListViewModel : ViewModel() {
 
     val newsList: MutableLiveData<Resource<List<Long>?>> = MutableLiveData<Resource<List<Long>?>>()
     val newLiveData = MutableLiveData<Resource<New?>>()
+    val markAsReadLiveData = MutableLiveData<Resource<Boolean?>>()
 
     val newsListInteractor: NewsListInteractor = NewsListInteractor()
     val newInteractor: NewsDetailsInteractor = NewsDetailsInteractor()
+    val markAsReadInteractor: MarkItemAsReadIInteractor = MarkItemAsReadIInteractor()
 
 
     fun loadData(): MutableLiveData<Resource<List<Long>?>> {
@@ -33,14 +36,29 @@ class NewsListViewModel : ViewModel() {
 
     fun loadNew(newId: Long): MutableLiveData<Resource<New?>> {
         newLiveData.postValue(Resource.loading())
-        newInteractor.execute(viewModelScope, NewsDetailsInteractor.RequestValues(newId), {
+        newInteractor.execute(viewModelScope, NewsDetailsInteractor.RequestValues(newId)) {
             handleNew(it)
-        })
+        }
         return newLiveData
     }
 
     private fun handleNew(new: Resource<New?>?) {
         newLiveData.postValue(new)
+    }
+
+    fun markAsRead(newId: Long): MutableLiveData<Resource<Boolean?>> {
+        markAsReadLiveData.postValue(Resource.loading())
+        markAsReadInteractor.execute(viewModelScope, MarkItemAsReadIInteractor.RequestValues(newId)){
+            handleMarkItem(it)
+        }
+        return markAsReadLiveData
+    }
+
+    private fun handleMarkItem(resource: Resource<Boolean?>) {
+        if (resource.status == Resource.Status.SUCCESS){
+            loadData()
+        }
+        markAsReadLiveData.postValue(resource)
     }
 
 }

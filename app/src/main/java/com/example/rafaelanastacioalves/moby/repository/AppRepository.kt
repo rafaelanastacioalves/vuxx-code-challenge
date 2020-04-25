@@ -59,4 +59,17 @@ object AppRepository {
 
         }.fromDB()
     }
+
+    suspend fun marNewAsRead(newId: Long): Resource<Boolean?> {
+        val readNewsIdsList: MutableList<Long>? = DAO.getReadNewsIdsList() as MutableList<Long>?
+        readNewsIdsList?.add(newId)
+        try {
+            DAO.saveReadNewsIdsList(readNewsIdsList)
+        } catch (e: Exception) {
+            return Resource.error(Resource.Status.GENERIC_ERROR, false, "DataBase SavingError")
+        }
+        return Resource.success(true)
+
+    }
+
 }
