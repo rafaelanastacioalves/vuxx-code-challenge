@@ -34,18 +34,16 @@ class NewsListingActivity : AppCompatActivity() {
         setupListerners()
         setupRecyclerView()
         subscribe()
-
     }
 
     private fun subscribe() {
         mNewsListViewModel = ViewModelProvider.NewInstanceFactory()
                 .create(NewsListViewModel::class.java)
-        mNewsListViewModel.loadData().observeForever({ newsResource ->
+        mNewsListViewModel.loadData().observeForever { newsResource ->
             Timber.d("On Changed")
             onNewsListReceived(newsResource)
-        })
+        }
     }
-
 
     private fun setupListerners() {
         mDismissClickListener = object : RecyclerViewClickListener {
@@ -102,7 +100,6 @@ class NewsListingActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun showError() {
         news_loading_error.visibility = View.VISIBLE
@@ -187,6 +184,4 @@ class NewsListingActivity : AppCompatActivity() {
             startActivity(browserIntent)
         }
     }
-
-
 }

@@ -11,7 +11,6 @@ class NewsAdapter(context: Context) : RecyclerView.Adapter<NewViewHolder>() {
     private lateinit var itemDismissClickListener: RecyclerViewClickListener
     private lateinit var itemClickListener: RecyclerViewClickListener
     private var items: List<Long>? = null
-
     private val mContext: Context = context
 
     fun setRecyclerViewClickListener(aRVC: RecyclerViewClickListener) {
@@ -46,10 +45,10 @@ class NewsAdapter(context: Context) : RecyclerView.Adapter<NewViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        if (getItems() != null) {
-            return getItems()!!.size
+        return if (getItems() != null) {
+            getItems()!!.size
         } else {
-            return 0
+            0
         }
     }
 }

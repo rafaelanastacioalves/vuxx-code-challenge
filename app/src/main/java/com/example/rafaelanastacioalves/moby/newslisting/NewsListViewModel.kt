@@ -20,13 +20,11 @@ class NewsListViewModel : ViewModel() {
     private val newInteractor: NewsDetailsInteractor = NewsDetailsInteractor()
     private val markAsReadInteractor: MarkItemAsReadIInteractor = MarkItemAsReadIInteractor()
 
-
     fun loadData(): MutableLiveData<Resource<List<Long>?>> {
         newLiveData.postValue(Resource.loading())
         newsListInteractor.execute(viewModelScope, null) {
             handleList(it)
         }
-
         return newsList
     }
 
@@ -60,5 +58,4 @@ class NewsListViewModel : ViewModel() {
         }
         markAsReadLiveData.postValue(resource)
     }
-
 }
