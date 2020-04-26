@@ -9,18 +9,9 @@ Desafio tecnico da empresa Vuxx.
 ## Descrição técnica
 
 ### Resumo
-Utilizei a arquitetura MVVM, com o uso de Interactors como ponte entre  
-ViewModels (VM) e Repositório (`AppRepository`).
-O `AppRepository` representa a abstração do fornecimnto dos dados que  
-serão utilizados pela aplicação. Ele detem a política de decisão sobre  
-como obter o dado. Parte dessa política está delegada ao  
-`NetworkBoundResource`.
-Os `Interactors` aplicam regras de negócio transformando os dados que  
-serão utilizados pela `ViewModel`. Os `Interactors` estão padronizados  
-(via `BaseInteractors`) para utilizarem, quando necessário, dos
-`Coroutines` para realização de suas tarefas assíncronas, como obter  
-e transformar dados.
-
+Utilizei a arquitetura MVVM, com o uso de Interactors como ponte entre ViewModels (VM) e Repositório (`AppRepository`).
+O `AppRepository` representa a abstração do fornecimnto dos dados que serão utilizados pela aplicação. Ele detem a política de decisão sobre como obter o dado. Parte dessa política está delegada ao `NetworkBoundResource`.
+Os `Interactors` aplicam regras de negócio transformando os dados que serão utilizados pela `ViewModel`. Os `Interactors` estão padronizados (via `BaseInteractors`) para utilizarem, quando necessário, dos `Coroutines` para realização de suas tarefas assíncronas, como obter e transformar dados.
 
 ### Principais BiBliotecas
 
