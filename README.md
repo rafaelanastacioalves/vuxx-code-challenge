@@ -29,3 +29,7 @@ Os `Interactors` aplicam regras de negócio transformando os dados que serão ut
 ## Testes
 
 Os testes utilizam o buildtype ```instrumentation``` para rodar, pois forçamos que o app seja buildado para apontar para localhost durante os testes.
+
+## Item não implementado
+
+- Opção de recuperar todos os items omitidos. (Será necessário apagar todos os dados manualmente).                
