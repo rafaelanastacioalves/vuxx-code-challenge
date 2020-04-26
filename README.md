@@ -32,4 +32,4 @@ Os testes utilizam o buildtype ```instrumentation``` para rodar, pois forçamos 
 
 ## Item não implementado
 
-- Opção de recuperar todos os items omitidos. (Será necessário apagar todos os dados manualmente).                
+- Opção de recuperar todos os items omitidos (Será necessário apagar todos os dados manualmente).                
