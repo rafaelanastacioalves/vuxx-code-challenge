@@ -33,7 +33,7 @@ object DAO {
         var list = Hawk.get<List<Long>>(READ_NEWS_KEY)
         return if (list != null) {
             list
-        }else{
+        } else {
             mutableListOf<Long>()
         }
     }

@@ -48,14 +48,14 @@ class NewsListViewModel : ViewModel() {
 
     fun markAsRead(newId: Long): MutableLiveData<Resource<Boolean?>> {
         markAsReadLiveData.postValue(Resource.loading())
-        markAsReadInteractor.execute(viewModelScope, MarkItemAsReadIInteractor.RequestValues(newId)){
+        markAsReadInteractor.execute(viewModelScope, MarkItemAsReadIInteractor.RequestValues(newId)) {
             handleMarkItem(it)
         }
         return markAsReadLiveData
     }
 
     private fun handleMarkItem(resource: Resource<Boolean?>) {
-        if (resource.status == Resource.Status.SUCCESS){
+        if (resource.status == Resource.Status.SUCCESS) {
             loadData()
         }
         markAsReadLiveData.postValue(resource)

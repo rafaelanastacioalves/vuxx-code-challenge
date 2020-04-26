@@ -40,7 +40,7 @@ class NewsListInteractor :
     private fun transform(completeList: List<Long>?, readList: List<Long>?): List<Long>? {
         val listWithoutReadItems = mutableListOf<Long>()
         if (completeList != null && readList != null) {
-             listWithoutReadItems.addAll(completeList.minus(readList))
+            listWithoutReadItems.addAll(completeList.minus(readList))
         }
         return ArrayList<Long>(listWithoutReadItems?.subList(0, LIST_QUANTITY))
     }

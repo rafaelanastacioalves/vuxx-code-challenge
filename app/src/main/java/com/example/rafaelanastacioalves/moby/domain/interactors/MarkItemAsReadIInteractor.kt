@@ -2,10 +2,9 @@ package com.example.rafaelanastacioalves.moby.domain.interactors
 
 import com.example.rafaelanastacioalves.moby.repository.AppRepository
 import com.example.rafaelanastacioalves.moby.repository.Resource
-import com.orhanobut.hawk.Hawk.init
 
 class MarkItemAsReadIInteractor :
-        BaseInteractor<Resource<Boolean?>, MarkItemAsReadIInteractor.RequestValues>(){
+        BaseInteractor<Resource<Boolean?>, MarkItemAsReadIInteractor.RequestValues>() {
     val appRepository: AppRepository
 
     init {

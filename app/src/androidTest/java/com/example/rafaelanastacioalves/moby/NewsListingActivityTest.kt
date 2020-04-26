@@ -2,33 +2,25 @@ package com.example.rafaelanastacioalves.moby
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.contrib.RecyclerViewActions
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import com.example.rafaelanastacioalves.moby.newslisting.NewsListingActivity
+import com.example.rafaelanastacioalves.moby.util.HelperMethods
 import com.example.rafaelanastacioalves.moby.util.RestServiceTestHelper
-
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 import java.io.IOException
-
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.view.View
-import com.example.rafaelanastacioalves.moby.util.HelperMethods.withHolderContainingId
-import org.hamcrest.core.AllOf.allOf
 
 
 @RunWith(AndroidJUnit4::class)
@@ -50,6 +42,8 @@ class NewsListingActivityTest {
 
     }
 
+    private val testedNewString = "Article Number 2 -> ID: 22980676"
+
     @Test
     @Throws(IOException::class)
     fun shouldNewsListSuccess() {
@@ -64,15 +58,9 @@ class NewsListingActivityTest {
 
         mainActivityActivityTestRule.launchActivity(intent)
 
-        onView(
-                withId(R.id.news_list)
-        ).perform(
-                RecyclerViewActions.scrollToHolder(
-                        withHolderContainingId(R.id.news_detail_title_textview)
-                )
-        )
-        onView(allOf<View>(withId(R.id.news_detail_title_textview), withText("Disney Premium"))).check(matches(isDisplayed()))
-
+        val testedPosition = 1
+        onView(withId(R.id.news_list)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(testedPosition))
+        onView(withId(R.id.news_list)).check(matches(HelperMethods.showNewItemWithTitle(testedNewString, testedPosition)))
     }
 
 
