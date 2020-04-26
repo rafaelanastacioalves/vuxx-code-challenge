@@ -128,8 +128,8 @@ class NewsListingActivity : AppCompatActivity() {
                     showProgressBar()
                 }
                 Resource.Status.SUCCESS -> {
-                    showNewsList()
                     hideProgressBar()
+                    showNewsList()
                     openNew(newResource)
                 }
                 Resource.Status.INTERNAL_SERVER_ERROR -> {
@@ -150,8 +150,8 @@ class NewsListingActivity : AppCompatActivity() {
         mNewsListViewModel.markAsRead(newId).observeForever { newResource ->
             when (newResource.status) {
                 Resource.Status.SUCCESS -> {
-                    showNewsList()
                     hideProgressBar()
+                    showNewsList()
                     Toast.makeText(this,
                             getString(R.string.omitted_item)
                             , Toast.LENGTH_SHORT).show()

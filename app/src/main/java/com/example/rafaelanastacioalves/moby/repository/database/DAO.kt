@@ -30,12 +30,7 @@ object DAO {
     }
 
     fun getReadNewsIdsList(): List<Long>? {
-        var list = Hawk.get<List<Long>>(READ_NEWS_KEY)
-        return if (list != null) {
-            list
-        } else {
-            mutableListOf<Long>()
-        }
+        return Hawk.get(READ_NEWS_KEY) ?: mutableListOf()
     }
 
     fun saveReadNewsIdsList(resultData: List<Long>?) {

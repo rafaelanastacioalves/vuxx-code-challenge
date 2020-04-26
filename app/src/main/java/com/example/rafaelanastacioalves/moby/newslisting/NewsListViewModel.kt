@@ -12,20 +12,20 @@ import com.example.rafaelanastacioalves.moby.repository.Resource
 
 class NewsListViewModel : ViewModel() {
 
-    val newsList: MutableLiveData<Resource<List<Long>?>> = MutableLiveData<Resource<List<Long>?>>()
-    val newLiveData = MutableLiveData<Resource<New?>>()
-    val markAsReadLiveData = MutableLiveData<Resource<Boolean?>>()
+    private val newsList: MutableLiveData<Resource<List<Long>?>> = MutableLiveData<Resource<List<Long>?>>()
+    private val newLiveData = MutableLiveData<Resource<New?>>()
+    private val markAsReadLiveData = MutableLiveData<Resource<Boolean?>>()
 
-    val newsListInteractor: NewsListInteractor = NewsListInteractor()
-    val newInteractor: NewsDetailsInteractor = NewsDetailsInteractor()
-    val markAsReadInteractor: MarkItemAsReadIInteractor = MarkItemAsReadIInteractor()
+    private val newsListInteractor: NewsListInteractor = NewsListInteractor()
+    private val newInteractor: NewsDetailsInteractor = NewsDetailsInteractor()
+    private val markAsReadInteractor: MarkItemAsReadIInteractor = MarkItemAsReadIInteractor()
 
 
     fun loadData(): MutableLiveData<Resource<List<Long>?>> {
         newLiveData.postValue(Resource.loading())
-        newsListInteractor.execute(viewModelScope, null, {
+        newsListInteractor.execute(viewModelScope, null) {
             handleList(it)
-        })
+        }
 
         return newsList
     }
