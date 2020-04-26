@@ -24,13 +24,13 @@ e transformar dados.
 
 ### Principais BiBliotecas
 
-- *Retrofit 2*: Para consultas http;
+- **Retrofit 2**: Para consultas http;
 
-- *Hawk*: Para persistência simples de dados (criptografado e não relacional)
+- **Hawk**: Para persistência simples de dados (criptografado e não relacional)
 
-- *Coroutines*: Para assincronicidade com melhor leitura de código (sem callbacks)
+- **Coroutines**: Para assincronicidade com melhor leitura de código (sem callbacks)
 
-- *Android Architecture Components*: Utilização de Viewmodel e Livedata
+- **Android Architecture Components**: Utilização de Viewmodel e Livedata
   para exibir e manter os dados utilizados pela View de maneira segura
   com o ciclo de vida das Activities
 
